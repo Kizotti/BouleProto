@@ -45,10 +45,10 @@ let yClick;
 //     return colors[randomColor];
 // }
 
-function rdClass() {
+// function rdClass() {
 
-    return Math.random() < 0.5 ? 'noir' : 'blanc';
-}
+//     return Math.random() < 0.5 ? 'noir' : 'blanc';
+// }
 
 function plusOrMinus() {
     return Math.random() < 0.5 ? -1 : 1;
@@ -69,6 +69,8 @@ function rdPosition(cell) {
 
 function clickCounter(e) {
     clickCpt++;
+
+    console.log('clickCpt :>> ', clickCpt);
 }
 
 
@@ -95,7 +97,7 @@ $("#container").click(function (e) {
 
     $('#boule1 h1').html(texteBoule[cpt])
 
-    // if (clickCpt < 5) {
+    if (clickCpt < 5) {
     gsap.to(boule1, .75, {
         transform: 'translate3d(' + xClick + 'px,' + yClick + 'px,0)',
         ease: 'power4.inOut'
@@ -107,12 +109,12 @@ $("#container").click(function (e) {
             rdPosition(boulesNot[i]);
         });
     }
-    // } else {
-    //     gsap.to(boules, .75, {
-    //         transform: 'translate3d(' + xClick + 'px,' + yClick + 'px,0)',
-    //         ease: 'power4.inOut'
-    //     });
-    // }
+    } else {
+        gsap.to(boules, .75, {
+            transform: 'translate3d(' + xClick + 'px,' + yClick + 'px,0)',
+            ease: 'power4.inOut'
+        });
+    }
 
     gsap.delayedCall(.75, function () {
         $('#container').css('pointer-events', 'all');
@@ -146,10 +148,10 @@ function addBoule(e) {
     let dedoubleBoule = document.createElement('div');
     let dedoubleText = document.createElement('h1');
 
-    dedoubleText.innerText = 'Cellule enfant';
+    dedoubleText.innerText = 'Cellule';
     dedoubleBoule.appendChild(dedoubleText);
     dedoubleBoule.classList.add('boules');
-    dedoubleBoule.classList.add(rdClass());
+    dedoubleBoule.classList.add('noir');
 
     console.log('e :>> ', e.target);
 
