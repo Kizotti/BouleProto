@@ -1,6 +1,6 @@
 
-// CHANGER LES COULEURS NOIRS ET BLANC
-// ANIMER LES 2 CELLULES LORS DU DEDOUBLEMENT
+// TOUTES DE LA MEME COULEUR
+// AU BOUT 5-6 CLICKS TOUT RASSEMBLER ET Afficher 'Embryon'
 
 
 let cpt = 0;
@@ -60,8 +60,7 @@ function rdScale() {
 
 function rdPosition(cell) {
     gsap.to(cell, .75, {
-        // backgroundColor: rdColor(),
-        transform: 'translate3d(' + (xClick / 1.5) + 'px,' + (yClick / 1.5) + 'px,0)',
+        transform: 'translate3d(' + (xClick / 1.5)*rdScale() + 'px,' + (yClick / 1.5)*rdScale() + 'px,0)',
         ease: 'power4.inOut'
     });
 }
@@ -69,9 +68,7 @@ function rdPosition(cell) {
 
 
 function clickCounter(e) {
-    // console.log('e :>> ', e);
     clickCpt++;
-    // console.log('clickCpt :>> ', clickCpt);
 }
 
 
@@ -99,17 +96,17 @@ $("#container").click(function (e) {
     $('#boule1 h1').html(texteBoule[cpt])
 
     // if (clickCpt < 5) {
-        gsap.to(boule1, .75, {
-            transform: 'translate3d(' + xClick + 'px,' + yClick + 'px,0)',
-            ease: 'power4.inOut'
-        });
+    gsap.to(boule1, .75, {
+        transform: 'translate3d(' + xClick + 'px,' + yClick + 'px,0)',
+        ease: 'power4.inOut'
+    });
 
-        if (boulesNot.length != 0) {
-            // console.log('boulesNot :>> ', boulesNot);
-            boulesNot.each(function (i) {
-                rdPosition(boulesNot[i]);
-            });
-        }
+    if (boulesNot.length != 0) {
+        // console.log('boulesNot :>> ', boulesNot);
+        boulesNot.each(function (i) {
+            rdPosition(boulesNot[i]);
+        });
+    }
     // } else {
     //     gsap.to(boules, .75, {
     //         transform: 'translate3d(' + xClick + 'px,' + yClick + 'px,0)',
@@ -119,7 +116,6 @@ $("#container").click(function (e) {
 
     gsap.delayedCall(.75, function () {
         $('#container').css('pointer-events', 'all');
-
     });
 
     cpt++;
@@ -155,11 +151,18 @@ function addBoule(e) {
     dedoubleBoule.classList.add('boules');
     dedoubleBoule.classList.add(rdClass());
 
+    console.log('e :>> ', e.target);
 
-    let wBoule1 = boule1.width();
+    console.log('vh(14) :>> ', vh(14));
 
-    let xClick = e.clientX - wBoule1 / 2;
-    let yClick = e.clientY - wBoule1 / 2;
+    let centerX = (e.offsetX);
+    let centerY = (e.offsetY);
+
+    // console.log('centerX :>> ', centerX);
+    // console.log('centerY :>> ', centerY);
+
+    let xClick = (e.clientX - (vh(7)) + 86 - centerX); 
+    let yClick = (e.clientY - (vh(7)) + 86 - centerY);
 
 
     dedoubleBoule.style.transform = 'translate(' + xClick + 'px, ' + yClick + 'px)';
@@ -167,12 +170,17 @@ function addBoule(e) {
     $('#container').append(dedoubleBoule);
 
     dedoubleBoule.addEventListener('click', e => addBoule(e));
-    dedoubleBoule.addEventListener('click',e => clickCounter(e));
+    dedoubleBoule.addEventListener('click', e => clickCounter(e));
 
-    let randomX = (Math.floor(Math.random() * 200) + wBoule1) * plusOrMinus();
-    let randomY = (Math.floor(Math.random() * 200) + wBoule1) * plusOrMinus();
+    let randomX = (Math.floor(Math.random() * 30) + (vh(7))) * plusOrMinus();
+    let randomY = (Math.floor(Math.random() * 30) + (vh(7))) * plusOrMinus();
 
-    gsap.to(dedoubleBoule, 1, { x: '+=' + randomX + 'px', y: '+=' + randomY + 'px', ease: 'power4.inOut' });
+
+    console.log('randomX :>> ', randomX);
+    console.log('randomY :>> ', randomY);
+
+    gsap.to(dedoubleBoule, 1, { x: '+=' + randomX + 'px', y: '+=' + randomY + 'px', ease: 'power4.inOut'});
+    gsap.to(e.target, 1, { x: '+=' + -randomX + 'px', y: '+=' + -randomY + 'px', ease: 'power4.inOut'});
 
     boulesNot = $('.boules:not(#boule1)');
     boules = $('.boules');
