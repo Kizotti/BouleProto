@@ -1,12 +1,9 @@
 
-// TOUTES DE LA MEME COULEUR
-// AU BOUT 5-6 CLICKS TOUT RASSEMBLER ET Afficher 'Embryon'
-
 
 let cpt = 0;
 let clickCpt = 0;
 // Contenus textes
-let texteBoule = ['Cellule', 'Cellule', 'Cellule', 'Cellule'];
+let texteBoule = ['Cellule', 'Cellule', 'Cellule', 'Embryon'];
 
 // On force le translate3d pour les perfs
 gsap.config({
@@ -50,14 +47,17 @@ let yClick;
 //     return Math.random() < 0.5 ? 'noir' : 'blanc';
 // }
 
+// Fonction pour rendre un nombre positif ou négatif aléatoirement
 function plusOrMinus() {
     return Math.random() < 0.5 ? -1 : 1;
 }
 
+// Nombre aléatoire pour la position
 function rdScale() {
     return Math.random() * 1.5 + 1;
 }
 
+// 
 function rdPosition(cell) {
     gsap.to(cell, .75, {
         transform: 'translate3d(' + (xClick / 1.5)*rdScale() + 'px,' + (yClick / 1.5)*rdScale() + 'px,0)',
@@ -75,17 +75,14 @@ function clickCounter(e) {
 
 
 // On crée et charge le son
-var audio = new Audio('../click3.mp3');
+// var audio = new Audio('../click3.mp3');
 
 $("#container").click(function (e) {
     e.preventDefault();
     e.stopPropagation();
     $('#container').css('pointer-events', 'none');
-    // console.log(' moveBoule(s)');
 
-    audio.play();
-
-    // let randomColor = rdColor();
+    // audio.play();
 
     let rdx = Math.round(vh(5)) * plusOrMinus();
     let rdy = Math.round(vh(5)) * plusOrMinus();
@@ -95,7 +92,7 @@ $("#container").click(function (e) {
 
     // console.log('xClick, yClick, rdx, rdy', yClick, yClick, rdx, rdy);
 
-    $('#boule1 h1').html(texteBoule[cpt])
+    // $('#boule1 h1').html(texteBoule[cpt])
 
     if (clickCpt < 5) {
     gsap.to(boule1, .75, {
@@ -114,6 +111,12 @@ $("#container").click(function (e) {
             transform: 'translate3d(' + xClick + 'px,' + yClick + 'px,0)',
             ease: 'power4.inOut'
         });
+         $('#boule1 h1').html(texteBoule[3])
+         gsap.delayedCall(.75, function () {
+            boulesNot.remove();
+        });
+
+         clickCpt = 0;
     }
 
     gsap.delayedCall(.75, function () {
